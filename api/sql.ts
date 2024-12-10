@@ -16,14 +16,14 @@ export default async (req: Request, ctx: any) => {
 
   {
     // Neon/neon
-    const sql = neon(process.env.POSTGRES_URL!, { fullResults: true });
+    const sql = neon(process.env.POSTGRES_URL!, { fullResults: true });  // extra line
     const result = await sql`SELECT * FROM posts WHERE id = ${postId}`;
     if (!result) return new Response('Not found (Neon)', { status: 404 });
     nresult = result;
   }
 
   // return the posts as JSON
-  return new Response(JSON.stringify({ vresult, nresult }), {
+  return new Response(JSON.stringify({ identical: vresult === nresult, vresult, nresult }), {
     headers: { 'content-type': 'application/json' }
   });
 }

@@ -1,8 +1,7 @@
-# neon-vercel-rawsql
+# neon-vercel-postgres-deprecation
 
-This repo demonstrates using raw SQL with [Neon's serverless driver](https://www.npmjs.com/package/@neondatabase/serverless) on [Vercel](https://vercel.com/) Edge Functions.
+This repo demonstrates using [Neon's serverless driver](https://www.npmjs.com/package/@neondatabase/serverless) to replace the `sql` tagged-template function in Vercel Postgres.
 
-Note: at the time of writing, WebSockets are not supported in the local Vercel development environment, so `npx vercel dev` is not usable.
 
 ## Deploy
 
