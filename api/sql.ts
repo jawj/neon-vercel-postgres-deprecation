@@ -1,6 +1,11 @@
 import { sql } from '@vercel/postgres';
 import { neon } from '@neondatabase/serverless';
 
+const deterministicReplacer = (_, v) =>
+  typeof v !== 'object' || v === null || Array.isArray(v) ? v :
+    Object.fromEntries(Object.entries(v).sort(([ka], [kb]) =>
+      ka < kb ? -1 : ka > kb ? 1 : 0));
+
 export default async (req: Request, ctx: any) => {
   const postId = parseInt(new URL(req.url).searchParams.get('postId')!, 10);
   if (isNaN(postId)) return new Response('Bad request', { status: 400 });
@@ -23,7 +28,11 @@ export default async (req: Request, ctx: any) => {
   }
 
   // return the posts as JSON
-  return new Response(JSON.stringify({ identical: vresult === nresult, vresult, nresult }), {
+  return new Response(JSON.stringify({
+    same: JSON.stringify(nresult, deterministicReplacer) === JSON.stringify(vresult, deterministicReplacer),
+    vresult,
+    nresult
+  }), {
     headers: { 'content-type': 'application/json' }
   });
 }
